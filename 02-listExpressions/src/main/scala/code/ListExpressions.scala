@@ -1,5 +1,7 @@
 package code
 
+import scala.annotation.tailrec
+
 // Exercise:
 //
 // Using only the following methods of List:
@@ -32,6 +34,34 @@ package code
 
 
 object ListExpressions extends Exercise {
+  def sum[A: Numeric](l: List[A]): A = {
+    val n = implicitly[Numeric[A]]
+    l.headOption.map(h => n.plus(h, sum(l.tail))) match {
+      case Some(result) => result
+      case None         => n.zero
+    }
+  }
+
+  def contains[A: Numeric](l: List[A], value: A): Boolean = {
+    val n = implicitly[Numeric[A]]
+    l.headOption.forall{head => n.equiv(head, value) || contains(l.tail, value)}
+  }
+
+  def containsAll[A: Numeric](first: List[A], second: List[A]): Boolean =
+    second.headOption.forall(head => contains(first, head) && containsAll(first, second.tail))
+
+  def squareNumbers(max: Int): List[Int] = {
+    require(max >= 1)
+
+    @tailrec
+    def go(curr: Int, result: List[Int]): List[Int] = {
+      val currSquare = curr * curr
+      if(currSquare > max) result
+      else go(curr + 1, result ++ List(curr * curr))
+    }
+
+    go(1, List.empty)
+  }
 
   // Write your methods here
 

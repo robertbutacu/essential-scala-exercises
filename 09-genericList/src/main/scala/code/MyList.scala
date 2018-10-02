@@ -41,61 +41,50 @@ package code
 // - Reimplement add using map
 
 
-sealed trait MyList {
+sealed trait MyList[A] {
   def length: Int =
     this match {
       case MyPair(_, t) => 1 + t.length
-      case MyNil        => 0
+      case t: MyNil[A]  => 0
     }
 
-  def contains(item: Int): Boolean =
+  def contains(item: A): Boolean =
     this match {
       case MyPair(h, t) => h == item || t.contains(item)
-      case MyNil        => false
+      case t: MyNil[A]  => false
     }
 
-  def addToEach(num: Int): MyList =
-    this match {
-      case MyPair(h, t) => MyPair(h + num, t.addToEach(num))
-      case MyNil        => MyNil
-    }
 
-  def sum: Int =
-    this match {
-      case MyPair(h, t) => h + t.sum
-      case MyNil        => 0
-    }
-
-  def exists(func: Int => Boolean): Boolean =
+  def exists(func: A => Boolean): Boolean =
     this match {
       case MyPair(h, t) => func(h) || t.exists(func)
-      case MyNil        => false
+      case MyNil()      => false
     }
 
-  def filter(func: Int => Boolean): MyList =
+  def filter(func: A => Boolean): MyList[A] =
     this match {
-      case MyPair(h, t) =>
+      case MyPair(h, t)   =>
         if(func(h)) MyPair(h, t.filter(func)) else t.filter(func)
-      case MyNil        => MyNil
+      case MyNil()        => MyNil()
     }
 
-  def reverse: MyList = {
-    def loop(list: MyList, accum: MyList): MyList =
+  def reverse: MyList[A] = {
+    def loop(list: MyList[A], accum: MyList[A]): MyList[A] =
       list match {
-        case MyPair(h, t) => loop(t, MyPair(h, accum))
-        case MyNil        => accum
+        case MyPair(h, t)   => loop(t, MyPair(h, accum))
+        case MyNil()        => accum
       }
 
-    loop(this, MyNil)
+    loop(this, MyNil())
   }
 
-  def find(func: Int => Boolean): Option[Int] =
+  def find(func: A => Boolean): Option[A] =
     this match {
       case MyPair(h, t) => if(func(h)) Some(h) else t.find(func)
-      case MyNil        => None
+      case MyNil()        => None
     }
 }
 
-case class MyPair(head: Int, tail: MyList) extends MyList
+case class MyPair[A](head: A, tail: MyList[A]) extends MyList[A]
 
-case object MyNil extends MyList
+case class MyNil[A]() extends MyList[A]

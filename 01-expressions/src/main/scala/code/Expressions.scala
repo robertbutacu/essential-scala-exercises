@@ -23,6 +23,17 @@ package code
 
 object Expressions extends Exercise {
 
-  // Write you methods here...
-  
+  def greet(s: String): String = "Hello " + s
+
+  def isPalindrome(s: String): Boolean = s.reverse == s
+
+  def factorial(n: Int): Int = {
+    require(n >= 0)
+    (1 to n).product
+  }
+
+  def reverseFactorial(n: Int): Int = {
+    require(n >= 0)
+    (n to 1 by -1).product
+  }
 }

@@ -1,5 +1,7 @@
 package code
 
+import scala.annotation.tailrec
+
 // Exercise:
 //
 // Implement an ADT called IntList!
@@ -52,5 +54,86 @@ package code
 //    - We'll be working with this code again and, ultimately, it'll be easier to not have the extra complexity.
 
 
-sealed trait IntList
-// etc...
+sealed trait IntList {
+  def length: Int = {
+    this match {
+      case IntPair(_, t) => 1 + t.length
+      case IntNil => 0
+    }
+  }
+
+  @tailrec
+  final def contains(elem: Int): Boolean = {
+    this match {
+      case IntPair(h, t) => h == elem || t.contains(elem)
+      case IntNil        => false
+    }
+  }
+
+  def addToEach(n: Int): IntList = {
+    this match {
+      case IntPair(h, t) => IntPair(h + n, t.addToEach(n))
+      case IntNil        => IntNil
+    }
+  }
+
+  def sum(): Int = {
+    this match {
+      case IntPair(h, t) => h + t.sum()
+      case IntNil        => 0
+    }
+  }
+
+  @tailrec
+  final def exists(f: Int => Boolean): Boolean = {
+    this match {
+      case IntPair(h, t) => f(h) || t.exists(f)
+      case IntNil        => false
+    }
+  }
+
+  def filter(f: Int => Boolean): IntList = {
+    this match {
+      case IntPair(h, t) => if(f(h)) IntPair(h, t.filter(f)) else t.filter(f)
+      case IntNil        => IntNil
+    }
+  }
+
+  def addElem(n: Int): IntList = {
+    this match {
+      case IntPair(h, t) => IntPair(h, t.addElem(n))
+      case IntNil        => IntPair(n, IntNil)
+    }
+  }
+
+  def reverse: IntList = {
+    this match {
+      case IntPair(h, t) => t.reverse.addElem(h)
+      case IntNil        => IntNil
+    }
+  }
+
+  def reverseOptimized: IntList = {
+    @tailrec
+    def go(curr: IntList, acc: IntList): IntList = {
+      curr match {
+        case IntNil => acc
+        case IntPair(h, t) => go(t, IntPair(h, acc))
+      }
+    }
+
+    go(this, IntNil)
+  }
+
+  @tailrec
+  final def find(f: Int => Boolean): Option[Int] = {
+    this match {
+      case IntPair(h, t) => if(f(h)) Some(h) else t.find(f)
+      case IntNil        => None
+    }
+  }
+}
+
+case class IntPair(head: Int, tail: IntList) extends IntList
+
+case object IntNil extends IntList

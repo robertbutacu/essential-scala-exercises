@@ -5,6 +5,8 @@ by Dave Gurnell, Copyright (C) 2018 Underscore Consulting LLP, licensed Apache 2
 This repository contains exercises and solutions for
 [Underscore's Essential Scala][course] training course.
 
+This is my own implementation - Robert Butacu - for the exercises.
+
 If you want to discuss the content or exercises with the authors,
 join us in our chat room on [Gitter][gitter].
 

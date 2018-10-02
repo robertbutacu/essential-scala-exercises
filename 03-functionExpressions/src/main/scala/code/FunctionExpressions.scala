@@ -18,34 +18,50 @@ object FunctionExpressions extends Exercise {
   def greet(name: String): String =
     "Hello " + name
 
+  type Greet = String => String
+
+  val greetFunc: Greet = greet
+
+  val greetFunc2: String => String = (name: String) => "Hello " + name
 
   def now: Long =
     System.currentTimeMillis
 
+  type Now = () => Long
+
+  def nowFunc: Now = now _
+
+  def nowFunc2 = () => System.currentTimeMillis
 
   def repeat(func: Int => Int): Int => Int =
     (arg: Int) => func(func(arg))
 
+  type Repeat = (Int => Int) => (Int => Int)
+
+  val repeatFunc: Repeat = repeat _
+  val repeatFunc2 = (f: (Int => Int)) => (arg: Int) => f(f(arg))
+
+  val repeatFunctPartiallyApplied = repeatFunc(n => n + 1)
 
   override def main(args: Array[String]): Unit = {
-    // println("GREET")
-    // println(greet("Dave"))
-    // println(greetFunc("Dave"))
-    // println(greetFunc2("Dave"))
-    // println()
+    println("GREET")
+    println(greet("Dave"))
+    println(greetFunc("Dave"))
+    println(greetFunc2("Dave"))
+    println()
 
-    // println("NOW")
-    // println(now)
-    // println(nowFunc)
+     println("NOW")
+     println(now)
+     println(nowFunc)
     // println(nowFunc2)
-    // println(nowFunc())
-    // println(nowFunc2())
-    // println()
+     println(nowFunc())
+     //println(nowFunc2())
+    println()
 
-    // println("REPEAT")
-    // println(repeat(n => n * n)(10))
-    // println(repeatFunc(n => n * n)(10))
-    // println(repeatFunc2(n => n * n)(10))
-    // println()
+     println("REPEAT")
+     println(repeat(n => n * n)(10))
+     println(repeatFunc(n => n * n)(10))
+     println(repeatFunc2(n => n * n)(10))
+     println()
   }
 }
