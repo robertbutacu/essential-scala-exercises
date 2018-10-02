@@ -41,50 +41,50 @@ package code
 // - Reimplement add using map
 
 
-sealed trait MyList[A] {
+sealed trait MyList[+A] {
   def length: Int =
     this match {
       case MyPair(_, t) => 1 + t.length
-      case t: MyNil[A]  => 0
+      case MyNil        => 0
     }
 
-  def contains(item: A): Boolean =
+  def contains[B >: A](item: B): Boolean =
     this match {
       case MyPair(h, t) => h == item || t.contains(item)
-      case t: MyNil[A]  => false
+      case MyNil        => false
     }
 
 
-  def exists(func: A => Boolean): Boolean =
+  def exists[B >: A](func: B => Boolean): Boolean =
     this match {
       case MyPair(h, t) => func(h) || t.exists(func)
-      case MyNil()      => false
+      case MyNil        => false
     }
 
-  def filter(func: A => Boolean): MyList[A] =
+  def filter[B >: A](func: B => Boolean): MyList[A] =
     this match {
       case MyPair(h, t)   =>
         if(func(h)) MyPair(h, t.filter(func)) else t.filter(func)
-      case MyNil()        => MyNil()
+      case MyNil          => MyNil
     }
 
   def reverse: MyList[A] = {
     def loop(list: MyList[A], accum: MyList[A]): MyList[A] =
       list match {
         case MyPair(h, t)   => loop(t, MyPair(h, accum))
-        case MyNil()        => accum
+        case MyNil        => accum
       }
 
-    loop(this, MyNil())
+    loop(this, MyNil)
   }
 
-  def find(func: A => Boolean): Option[A] =
+  def find[B >: A](func: B => Boolean): Option[B] =
     this match {
       case MyPair(h, t) => if(func(h)) Some(h) else t.find(func)
-      case MyNil()        => None
+      case MyNil        => None
     }
 }
 
 case class MyPair[A](head: A, tail: MyList[A]) extends MyList[A]
 
-case class MyNil[A]() extends MyList[A]
+case object MyNil extends MyList[Nothing]

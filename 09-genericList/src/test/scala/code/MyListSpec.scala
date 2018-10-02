@@ -6,8 +6,8 @@ class MyListSpec extends FlatSpec with Matchers {
 
   // Helper method to make it easier to build lists.
   // You'll see how this works in the Sequencing Computations section:
-  // def list[A](items: A *): MyList[A] =
-  //   items.foldRight[MyList[A]](MyNil())(MyPair[A])
+  def list[A](items: A *): MyList[A] =
+    items.foldRight[MyList[A]](MyNil)(MyPair[A])
 
   "length" should "return the length of the list" in {
     pending
@@ -64,10 +64,9 @@ class MyListSpec extends FlatSpec with Matchers {
   }
 
   "filter" should "filter elements by predicate" in {
-    pending
-    // list(1, 2, 3).filter(n => n == 2) should equal(list(2))
-    // list(1, 2, 3).filter(n => n % 2 == 1) should equal(list(1, 3))
-    // list(1, 2, 3).filter(n => n < 1) should equal(list())
+    list(1, 2, 3).filter(n => n == 2) should equal(list(2))
+    list(1, 2, 3).filter(n => n % 2 == 1) should equal(list(1, 3))
+    list(1, 2, 3).filter(n => n < 1) should equal(list())
 
     // list("1", "2", "3").filter(n => n == "2") should equal(list("2"))
     // list("1", "2", "3").filter(n => n == "1" || n == "3") should equal(list("1", "3"))
