@@ -45,12 +45,15 @@ class MyListSpec extends FlatSpec with Matchers {
    }
 
    "sum" should "sum all elements" in {
-    pending
-     // list(1, 2, 3).sum should equal(6)
-     // list(1, 2, 3, 4).sum should equal(10)
+     list(1, 2, 3).foldLeft(0)(_ + _) should equal(6)
+     list(1, 2, 3, 4).foldLeft(0)(_ + _) should equal(10)
 
-     // list().sum should equal(0)
+     list[Int]().foldLeft(0)((curr, acc) => curr + acc) should equal(0)
    }
+
+  "foldRight" should "return it" in {
+    list("A", "B", "C").foldRight("")((curr, acc) => acc + curr) should equal("CBA")
+  }
 
   "exists" should "find elements by predicate" in {
     pending
@@ -96,8 +99,7 @@ class MyListSpec extends FlatSpec with Matchers {
   }
 
   "append" should "append two lists" in {
-    pending
-    // list(1, 2) ++ list(3, 4) should equal(list(1, 2, 3, 4))
-    // list("1", "2") ++ list("3", "4") should equal(list("1", "2", "3", "4"))
+    list(1, 2) ++ list(3, 4) should equal(list(1, 2, 3, 4))
+    list("1", "2") ++ list("3", "4") should equal(list("1", "2", "3", "4"))
   }
 }

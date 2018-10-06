@@ -83,6 +83,37 @@ sealed trait MyList[+A] {
       case MyPair(h, t) => if(func(h)) Some(h) else t.find(func)
       case MyNil        => None
     }
+
+  def ++[B >: A](another: MyList[B]): MyList[B] = {
+      this match {
+        case MyNil        => another
+        case MyPair(h, t) => MyPair(h, t ++ another)
+      }
+    }
+
+  def foldLeft[B](accum: B)(f: (A, B) => B): B =
+    this match {
+      case MyNil => accum
+      case MyPair(h, t) => t.foldLeft(f(h, accum))(f)
+    }
+
+  def foldRight[B](accum: B)(f: (A, B) => B): B = {
+    ???
+  }
+
+  def map[B](f: A => B): MyList[B] =
+    this match {
+      case MyNil => MyNil
+      case MyPair(h, t) => MyPair(f(h), t.map(f))
+    }
+
+  def flatMap[B, F[_]](f: A => F[B]): MyList[B] = {
+    ???
+  }
+
+
+  // - Implement foldLeft and foldRight for MyList
+
 }
 
 case class MyPair[A](head: A, tail: MyList[A]) extends MyList[A]

@@ -14,19 +14,25 @@ package code
 
 
 object ExtensionMethods extends Exercise {
+  implicit class StringOps(s: String) {
+    def hello: String = "Hello " + s
+  }
 
+  implicit class TimesOps(n: Int) {
+    def times[A](f: Int => A) = f(n)
+  }
 
-  // Implement your implicit classes here
-  // (they can't be defined at the top level)
 
 
   override def main(args: Array[String]): Unit = {
-    // println("HELLO")
-    // println("Dave".hello)
-    // println()
+    println("HELLO")
+    println("Dave".hello)
+    println()
+    println("1" + 2)
+    println(1 + "2")
 
-    // println("TIMES")
-    // println(3.times(n => s"It's the number $n!"))
-    // println()
+     println("TIMES")
+     println(3.times(n => s"It's the number $n!"))
+     println()
   }
 }

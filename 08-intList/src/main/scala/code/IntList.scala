@@ -1,7 +1,6 @@
 package code
 
 import scala.annotation.tailrec
-
 // Exercise:
 //
 // Implement an ADT called IntList!

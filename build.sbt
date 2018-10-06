@@ -115,6 +115,7 @@ def commonSettings(projectName: String) =
     libraryDependencies ++= Seq(
       "org.scalactic" %% "scalactic" % "3.0.1" % Test,
       "org.scalatest" %% "scalatest" % "3.0.1" % Test,
+      "org.typelevel" %% "cats-core" % "1.4.0"
     ),
     scalacOptions ++= Seq(
       "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
